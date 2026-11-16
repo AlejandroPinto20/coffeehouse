@@ -1,0 +1,1 @@
+{"name":"coffeehouse-backend","private":true,"type":"module","scripts":{"start":"node --env-file=.env App.js","db:init":"node --env-file=.env init-db.js"},"engines":{"node":">=22.12"},"dependencies":{"express":"^5.1.0","express-rate-limit":"^8.0.0","mysql2":"^3.14.0"}}
