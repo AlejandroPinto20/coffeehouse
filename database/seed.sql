@@ -1,5 +1,5 @@
 INSERT IGNORE INTO site_profile VALUES
-(1,'CoffeeHouse','Cochabamba · Bolivia','Av. América, zona norte (referencia de demostración)','+591 7000 0000','Lun a sáb · 08:00 a 20:00','CoffeeHouse nace como un proyecto de cafetería de barrio. Nos imaginamos un espacio en Cochabamba donde el aroma del café recién molido invite a quedarse un rato, compartir una mesa o volver por el espresso de siempre.','Proyecto académico. La historia, la dirección, el teléfono, los horarios y los precios son de demostración. Las fotos son ilustrativas.','/media/espresso.mp4','/media/hero.jpg','https://www.pexels.com/video/a-machine-pouring-coffee-in-a-cup-9399042/');
+(1,'CoffeeHouse','Cochabamba · Bolivia','Av. América, zona norte (referencia de demostración)','+591 7000 0000','Lun a sáb · 08:00 a 20:00','CoffeeHouse nace como un proyecto de cafetería de barrio. Nos imaginamos un espacio en Cochabamba donde el aroma del café recién molido invite a quedarse un rato, compartir una mesa o volver por el espresso de siempre.','Proyecto académico. La historia, la dirección, el teléfono, los horarios y los precios son de demostración. Las fotos son ilustrativas.','/media/espresso.mp4','https://images.pexels.com/videos/9399042/arabica-coffee-barista-barista-making-coffee-9399042.jpeg?auto=compress&dpr=1&h=750&w=1260','https://www.pexels.com/video/a-machine-pouring-coffee-in-a-cup-9399042/');
 
 INSERT IGNORE INTO ui_texts VALUES
 ('skip', 'Saltar al contenido'),
@@ -58,9 +58,9 @@ INSERT IGNORE INTO services VALUES
 
 INSERT IGNORE INTO categories VALUES (1,'Café',1),(2,'Bebidas frías',2),(3,'Repostería',3);
 INSERT IGNORE INTO products VALUES
-(1, 1, 'Espresso de la casa', 'Intenso y equilibrado, con notas de cacao.', 12, 1, '/media/espresso.jpg', 'Taza de espresso en una mesa', 1),
-(2, 1, 'Latte de vainilla', 'Espresso, leche vaporizada y un toque de vainilla.', 22, 1, '/media/latte.jpg', 'Taza de latte con arte en la espuma', 2),
-(3, 3, 'Croissant de mantequilla', 'Masa laminada y exterior dorado.', 16, 1, '/media/pastry.jpg', 'Croissants de mantequilla', 3),
+(1, 1, 'Espresso de la casa', 'Intenso y equilibrado, con notas de cacao.', 12, 1, 'https://images.pexels.com/photos/312418/pexels-photo-312418.jpeg?auto=compress&cs=tinysrgb&w=1000', 'Taza de espresso en una mesa', 1),
+(2, 1, 'Latte de vainilla', 'Espresso, leche vaporizada y un toque de vainilla.', 22, 1, 'https://images.pexels.com/photos/350478/pexels-photo-350478.jpeg?auto=compress&cs=tinysrgb&w=1000', 'Taza de latte con arte en la espuma', 2),
+(3, 3, 'Croissant de mantequilla', 'Masa laminada y exterior dorado.', 16, 1, 'https://images.pexels.com/photos/3892469/pexels-photo-3892469.jpeg?auto=compress&cs=tinysrgb&w=1000', 'Croissants de mantequilla', 3),
 (4, 1, 'Cappuccino', 'Espresso con leche y espuma cremosa.', 19, 0, '', '', 4),
 (5, 1, 'Americano', 'Espresso alargado con agua caliente.', 15, 0, '', '', 5),
 (6, 1, 'Café filtrado', 'Café preparado a mano con filtro.', 20, 0, '', '', 6),
@@ -70,6 +70,6 @@ INSERT IGNORE INTO products VALUES
 (10, 3, 'Torta de zanahoria', 'Bizcocho especiado con crema.', 22, 0, '', '', 10);
 
 INSERT IGNORE INTO gallery VALUES
-(1,'/media/interior.jpg','Interior ilustrativo de una cafetería',1),
-(2,'/media/bar.jpg','Barra ilustrativa de una cafetería con mesas',2);
+(1,'https://images.pexels.com/photos/1855214/pexels-photo-1855214.jpeg?auto=compress&cs=tinysrgb&w=1000','Interior ilustrativo de una cafetería',1),
+(2,'https://images.pexels.com/photos/1307698/pexels-photo-1307698.jpeg?auto=compress&cs=tinysrgb&w=1000','Barra ilustrativa de una cafetería con mesas',2);
 
