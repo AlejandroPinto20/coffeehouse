@@ -1,0 +1,165 @@
+@if (site(); as data) {
+  @let t = data.texts;
+  @let p = data.profile;
+  <a class="skip" href="#contenido">{{ t['skip'] }}</a>
+  <header class="top">
+    <div class="shell top-inner">
+      <a class="brand" href="#inicio"><span class="bean" aria-hidden="true"></span>{{ p.name }}</a>
+      <button type="button" class="mobile-menu" (click)="menuOpen.set(!menuOpen())"
+        [attr.aria-expanded]="menuOpen()" aria-controls="navigation" [attr.aria-label]="t['menuToggle']">☰</button>
+      <nav id="navigation" [class.visible]="menuOpen()" [attr.aria-label]="t['nav']">
+        @for (section of data.sections; track section.slug) {
+          <a [href]="'#' + section.slug" (click)="menuOpen.set(false)">{{ section.nav_label }}</a>
+        }
+      </nav>
+    </div>
+  </header>
+  <main id="contenido">
+    <section id="inicio" class="hero">
+      <video #heroVideo class="hero-video" [src]="p.video_url" [poster]="p.poster_url"
+        [autoplay]="!reducedMotion.matches" [muted]="true" muted playsinline loop preload="metadata" aria-hidden="true"
+        (playing)="playing.set(true)" (pause)="playing.set(false)" (error)="playing.set(false)"></video>
+      <div class="shell hero-inner">
+        <p class="eyebrow">{{ p.location }}</p>
+        <h1>{{ t['heroLead'] }}<br><em>{{ t['heroAccent'] }}</em></h1>
+        <p class="hero-body">{{ t['heroBody'] }}</p>
+        <div class="hero-actions">
+          <a class="button gold" href="#precios">{{ t['heroAction'] }} <span aria-hidden="true">↗</span></a>
+          <a class="button ghost" href="#contactos">{{ t['heroContact'] }}</a>
+        </div>
+      </div>
+      <div class="shell hero-bottom">
+        <a href="#servicios" class="down" [attr.aria-label]="t['next']">↓</a>
+        <button type="button" class="round" (click)="toggleVideo(heroVideo)"
+          [attr.aria-label]="t[playing() ? 'pause' : 'play']">{{ playing() ? 'Ⅱ' : '▷' }}</button>
+      </div>
+    </section>
+
+    @for (section of data.sections; track section.slug) {
+      @if (section.slug !== 'inicio') {
+        <section [id]="section.slug" [class]="'section ' + section.slug">
+          <div class="shell">
+            <div class="section-heading">
+              <p class="eyebrow">{{ section.eyebrow }}</p>
+              <h2>{{ section.title }}</h2>
+              @if (section.description) { <p>{{ section.description }}</p> }
+            </div>
+            @switch (section.slug) {
+              @case ('servicios') {
+                <div class="service-grid">
+                  @for (service of data.services; track service.id) {
+                    <article class="service">
+                      <span aria-hidden="true">{{ icons[service.icon] || '◇' }}</span>
+                      <h3>{{ service.name }}</h3>
+                      <p>{{ service.description }}</p>
+                    </article>
+                  }
+                </div>
+              }
+              @case ('especialidades') {
+                <div class="photo-grid">
+                  @for (product of featured(); track product.id) {
+                    <article class="feature">
+                      @if (product.photo_url) { <img [src]="product.photo_url" [alt]="product.photo_alt" loading="lazy"> }
+                      <div class="feature-details">
+                        <h3>{{ product.name }}</h3>
+                        <p>{{ product.description }}</p>
+                        <strong>{{ product.price | currency:t['currency']:t['currencySymbol']:'1.2-2' }}</strong>
+                      </div>
+                    </article>
+                  }
+                </div>
+              }
+              @case ('nosotros') {
+                <div class="story">
+                  <div class="story-text">
+                    <p>{{ p.story }}</p>
+                    <p>{{ p.hours }}</p>
+                  </div>
+                  <div class="gallery">
+                    @for (photo of data.gallery; track photo.id) {
+                      <img [src]="photo.photo_url" [alt]="photo.photo_alt" loading="lazy">
+                    }
+                  </div>
+                </div>
+              }
+              @case ('precios') {
+                <div class="filters">
+                  <button type="button" [attr.aria-pressed]="category() === null" (click)="category.set(null)">{{ t['all'] }}</button>
+                  @for (item of data.categories; track item.id) {
+                    <button type="button" [attr.aria-pressed]="category() === item.id" (click)="category.set(item.id)">{{ item.name }}</button>
+                  }
+                </div>
+                <div class="menu-list">
+                  @for (product of filtered(); track product.id) {
+                    <article>
+                      <div><h3>{{ product.name }}</h3><p>{{ product.description }}</p></div>
+                      <strong>{{ product.price | currency:t['currency']:t['currencySymbol']:'1.2-2' }}</strong>
+                    </article>
+                  }
+                </div>
+                <p class="note">{{ t['priceNote'] }}</p>
+              }
+              @case ('contactos') {
+                <div class="contact-grid">
+                  <dl>
+                    <dt>{{ t['contactAddress'] }}</dt><dd>{{ p.address }}</dd>
+                    <dt>{{ t['contactPhone'] }}</dt><dd>{{ p.phone }}</dd>
+                    <dt>{{ t['contactHours'] }}</dt><dd>{{ p.hours }}</dd>
+                  </dl>
+                  <form (ngSubmit)="contactForm.valid && sendContact()" #contactForm="ngForm">
+                    <label>{{ t['contactName'] }}<input name="name" [(ngModel)]="contact.name" required minlength="2" maxlength="100" autocomplete="name"></label>
+                    <label>{{ t['contactEmail'] }}<input name="email" [(ngModel)]="contact.email" type="email" email required maxlength="254" autocomplete="email"></label>
+                    <label>{{ t['contactMessage'] }}<textarea name="message" [(ngModel)]="contact.message" required minlength="10" maxlength="2000" rows="4"></textarea></label>
+                    <button class="button gold" [disabled]="submitting() || contactForm.invalid">{{ t[submitting() ? 'contactSending' : 'contactSend'] }}</button>
+                    <p class="form-status" role="status">{{ t[contactStatus()] }}</p>
+                  </form>
+                </div>
+              }
+            }
+          </div>
+        </section>
+      }
+    }
+  </main>
+  <footer>
+    <div class="shell footer-inner">
+      <div><a class="brand" href="#inicio"><span class="bean" aria-hidden="true"></span>{{ p.name }}</a>
+      <p>{{ t['footerLine'] }}</p></div>
+      <div><p>{{ p.demo_notice }}</p><a [href]="p.video_credit_url">{{ t['mediaCredit'] }}</a></div>
+    </div>
+  </footer>
+
+  @if (chatOpen()) {
+    <aside class="chat" [attr.aria-label]="t['chatTitle']" (keydown.escape)="chatOpen.set(false); chatTrigger.focus()">
+      <div class="chat-header"><h2>{{ t['chatTitle'] }}</h2>
+        <button type="button" [attr.aria-label]="t['chatClose']" (click)="chatOpen.set(false); chatTrigger.focus()">×</button>
+      </div>
+      <div #log class="chat-log" role="log">
+        <p class="assistant">{{ t['chatGreeting'] }}</p>
+        @for (message of messages(); track $index) {
+          <p [class]="message.role">{{ message.content }}</p>
+        }
+        @if (chatPending()) { <p class="assistant">{{ t['chatWaiting'] }}</p> }
+        @if (chatStatus()) { <p class="assistant">{{ t[chatStatus()] }}</p> }
+      </div>
+      <form class="chat-form" (ngSubmit)="sendChat(log)">
+        <input name="question" [(ngModel)]="question" maxlength="500" [readOnly]="chatPending()"
+          [attr.aria-label]="t['chatPlaceholder']" [placeholder]="t['chatPlaceholder']">
+        <button [disabled]="chatPending() || !question.trim()" [attr.aria-label]="t['chatSend']">↑</button>
+      </form>
+    </aside>
+  }
+  <button #chatTrigger type="button" class="chat-trigger" [attr.aria-expanded]="chatOpen()" [attr.aria-label]="t[chatOpen() ? 'chatClose' : 'chatOpen']" (click)="chatOpen.set(!chatOpen())">
+    @if (chatOpen()) { <span aria-hidden="true">×</span> }
+    @else {
+      <svg width="23" height="23" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 11.5a8 8 0 0 1-8 8H5l1.6-3A8 8 0 1 1 21 11.5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 12h7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    }
+  </button>
+} @else {
+  <div class="startup">
+    @if (loadError()) { <button class="retry" type="button" (click)="load()">↻</button> }
+    @else { <span class="spinner"></span> }
+  </div>
+}
+
